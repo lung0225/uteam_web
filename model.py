@@ -1,12 +1,10 @@
 def curve(use_rate):
-    return market_table[use_rate]
-def show_graph():
-    plt.scatter(df['Danceability'], df['Energy'], c=df['Cluster'], cmap='viridis')
-    plt.xlabel('Danceability')
-    plt.ylabel('Energy')
-    plt.title('K-means Clustering')
-    plt.show()
+    x = use_rate
+    price = 4.597141000649841e-06 * (x ** 4) - 0.001107618583495793 * (x ** 3) + 0.09304824561403652 * (x ** 2) - 3.793551007147545 * x + 116.77712800519855
+    price = round( price, 2) 
 def evaluation(lots_available, time, price_table):
     # monthly renting  fixed_income
     threshold = config.fixed_income + past_data(time) * lots_available * price_table(config.parking_lot)
     return threshold 
+
+    
