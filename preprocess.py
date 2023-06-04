@@ -9,7 +9,7 @@
 # 晚上 使用率高的停車塲 
 import model 
 import pandas as pd
-from tools import time_calculater
+from tools import time_calculater, graph_plot_year
 from datetime import datetime
 #import matplotlib.pyplot as plt
 
@@ -45,12 +45,10 @@ def clean_data(): # clean duplicate data and 2021 data
         print(monthly_data[i])
     #################################
               '''  
-
-#if date[0:4] == "2021":
 class Data_set:
     def __init__(self) -> None:
         self.all_data = monthly_data
-        self.year_2022_data = [0 for i in range(525600 + 1)] # 60 * 24 * 365 february = 28
+        self.year_2022_data = [0 for i in range(525600)] # 60 * 24 * 365 february = 28
     def extract_timely_data(self):
         for dataframe in self.all_data:
         #dataframe = self.all_data[0]
@@ -58,33 +56,30 @@ class Data_set:
             for index in range(dataframe.shape[0]): # rows
                 data = dataframe.iloc[index]
                 #print(data)
-                date = data[0] # timestamp
+                date_in = data[0] # timestamp
                 time = data[1] # timestamp
-                date = date.strftime("%d,%m,%Y")
-                month = date[3:5]
-                day = date[0:2]
+                date_in = date_in.strftime("%d,%m,%Y")
+                month = date_in[3:5]
+                day = date_in[0:2]
                 time = time.strftime("%H,%M,%S")
                 hour = time[0:2]
                 minute = time[3:5]
-                self.year_2022_data[time_calculater(month, day, hour, minute)] += 1
-    def change_to_series():
-        pass
-            
-        
-        '''
-    def plot_data():
-        plt.figure(figsize=(15,6))
-        sns.lineplot()
-        plt.show()
-        '''
-        
+                in_time = time_calculater(month, day, hour, minute)
+                ### 
+                date_out = data[2]
+                time = data[3]
+                date_out = date_out.strftime("%d,%m,%Y")
+                month = date_out[3:5]
+                day = date_out[0:2]
+                time = time.strftime("%H,%M,%S")
+                hour = time[0:2]
+                minute = time[3:5]
+                out_time = time_calculater(month, day, hour, minute)
+                for t in range(in_time , out_time+1):
+                    self.year_2022_data[ t ] += 1
 load_data()
 clean_data()
 king_shuan = Data_set()
-
 king_shuan.extract_timely_data()
-for i in range(len(king_shuan.year_2022_data)):
-    if king_shuan.year_2022_data[i] != 0 and king_shuan.year_2022_data[i] != 12 and king_shuan.year_2022_data[i] != 24:
-        print(f'{i}:{king_shuan.year_2022_data[i]}')
-        
-#a = pd.Series(sum, index=pd.date_range("2022", freq="60min", periods=3))
+graph_plot_year(king_shuan.year_2022_data)
+
